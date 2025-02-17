@@ -135,9 +135,9 @@ int main() {
             if (joyX_valor >= 1800 && joyX_valor <= 2300) { // Situação em que o quadrado está no centro
                 pwm_set_gpio_level(LED_R, 0);
             } else if (joyX_valor > 2300) { // Situação em que o quadrado vai para baixo
-                pwm_set_gpio_level(LED_R, joyY_valor - 2300);
+                pwm_set_gpio_level(LED_R, joyX_valor - 2300);
             } else if (joyX_valor < 1800) { // Situação em que o quadrado vai para cima
-                pwm_set_gpio_level(LED_R, 1800 - joyY_valor);
+                pwm_set_gpio_level(LED_R, 1800 - joyX_valor);
             }
 
             if (joyY_valor >= 1800 && joyY_valor <= 2300) { // Situação em que o quadrado está no centro
