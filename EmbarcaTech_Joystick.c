@@ -107,9 +107,9 @@ int main() {
     setup_inicial();
 
     while (true) {
-        adc_select_input(0); // Ler eixo Y do analógico
+        adc_select_input(0); // Lê eixo Y do analógico
         uint16_t joyY_valor = adc_read();
-        adc_select_input(1); // Ler eixo X do analógico
+        adc_select_input(1); // Lê eixo X do analógico
         uint16_t joyX_valor = adc_read();
 
         ssd1306_fill(&ssd, !cor); // Limpa o display
