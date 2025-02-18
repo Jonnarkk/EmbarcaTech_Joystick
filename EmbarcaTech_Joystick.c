@@ -27,6 +27,7 @@
 uint DUTY_C = 0;
 uint sliceB; // Variável para o slice do LED azul
 uint sliceR; // Variável para o slice do LED vermelho
+uint CONTADOR = 0; // Contador para mudar o estilo da borda
 uint32_t last_print_time = 0;
 uint32_t last_timeA = 0; // Guarda a última vez que o botão A foi pressionado
 uint32_t last_timeJ = 0; // Guarda a última vez que o botão Joystick foi pressionado
@@ -62,7 +63,11 @@ void gpio_irq_handler(uint gpio, uint32_t events) {
             botao_state = !botao_state; // Alterna o estado do botão
             ledg_state = botao_state; // Sincroniza o estado do LED com o botão
             gpio_put(LED_G, ledg_state); // Atualiza o LED verde
-            printf("ESTADO: %s\n", ledg_state ? "LED VERDE ATIVADO" : "LED VERDE DESATIVADO");
+
+            // Incrementa o contador e garante que não passa de 3
+            CONTADOR = (CONTADOR + 1) % 3;
+
+            printf("ESTADO: %s | BORDA: %d\n", ledg_state ? "LED VERDE ATIVADO" : "LED VERDE DESATIVADO", CONTADOR);
         }
     }
 }
@@ -117,10 +122,23 @@ int main() {
             ssd1306_rect(&ssd, 0, 0, 127, 63, cor, !cor); // Desenha a borda padrão
         } else {
             // Desenha uma borda maior quando o botão está pressionado
-            ssd1306_rect(&ssd, 3, 3, 121, 57, cor, !cor);
-            ssd1306_rect(&ssd, 2, 2, 123, 59, cor, !cor);
-            ssd1306_rect(&ssd, 1, 1, 125, 61, cor, !cor);
-            ssd1306_rect(&ssd, 0, 0, 127, 63, cor, !cor);
+            if (CONTADOR == 0) {
+                // Borda mais grossa
+                ssd1306_rect(&ssd, 3, 3, 121, 57, cor, !cor);
+                ssd1306_rect(&ssd, 2, 2, 123, 59, cor, !cor);
+                ssd1306_rect(&ssd, 1, 1, 125, 61, cor, !cor);
+                ssd1306_rect(&ssd, 0, 0, 127, 63, cor, !cor);
+            } else if (CONTADOR == 1) {
+                // Borda média
+                ssd1306_rect(&ssd, 2, 2, 123, 59, cor, !cor);
+                ssd1306_rect(&ssd, 1, 1, 125, 61, cor, !cor);
+                ssd1306_rect(&ssd, 0, 0, 127, 63, cor, !cor);
+            }
+            else if(CONTADOR == 2){
+                // Borda mais fina
+                ssd1306_rect(&ssd, 1, 1, 125, 61, cor, !cor);
+                ssd1306_rect(&ssd, 0, 0, 127, 63, cor, !cor);
+            }
         }
 
         // Faz a atualização da pos. do quadrado no display
