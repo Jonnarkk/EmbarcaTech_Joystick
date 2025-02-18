@@ -10,7 +10,6 @@
 // Defines
 #define joyX 27
 #define joyY 26
-#define sense 50
 #define I2C_LINK 0x3C
 #define I2C_PORT i2c1
 #define I2C_SDA 14
